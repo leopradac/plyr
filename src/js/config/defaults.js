@@ -50,7 +50,7 @@ const defaults = {
     clickToPlay: true,
 
     // Auto hide the controls
-    hideControls: true,
+    hideControls: false,
 
     // Reset to start when playback ended
     resetOnEnd: false,

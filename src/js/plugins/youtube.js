@@ -3,15 +3,28 @@
 // ==========================================================================
 
 import ui from '../ui';
-import { createElement, replaceElement, toggleClass } from '../utils/elements';
-import { triggerEvent } from '../utils/events';
+import {
+    createElement,
+    replaceElement,
+    toggleClass
+} from '../utils/elements';
+import {
+    triggerEvent
+} from '../utils/events';
 import fetch from '../utils/fetch';
 import is from '../utils/is';
 import loadImage from '../utils/load-image';
 import loadScript from '../utils/load-script';
-import { extend } from '../utils/objects';
-import { format, generateId } from '../utils/strings';
-import { setAspectRatio } from '../utils/style';
+import {
+    extend
+} from '../utils/objects';
+import {
+    format,
+    generateId
+} from '../utils/strings';
+import {
+    setAspectRatio
+} from '../utils/style';
 
 // Parse YouTube ID from URL
 function parseId(url) {
@@ -83,7 +96,11 @@ const youtube = {
         fetch(url)
             .then(data => {
                 if (is.object(data)) {
-                    const { title, height, width } = data;
+                    const {
+                        title,
+                        height,
+                        width
+                    } = data;
 
                     // Set title
                     this.config.title = title;
@@ -122,9 +139,14 @@ const youtube = {
         const videoId = parseId(source);
         const id = generateId(player.provider);
         // Get poster, if already set
-        const { poster } = player;
+        const {
+            poster
+        } = player;
         // Replace media element
-        const container = createElement('div', { id, poster });
+        const container = createElement('div', {
+            id,
+            poster
+        });
         player.media = replaceElement(container, player.media);
 
         // Id to poster wrapper
@@ -150,12 +172,10 @@ const youtube = {
         player.embed = new window.YT.Player(id, {
             videoId,
             host: getHost(config),
-            playerVars: extend(
-                {},
-                {
+            playerVars: extend({}, {
                     autoplay: player.config.autoplay ? 1 : 0, // Autoplay
                     hl: player.config.hl, // iframe interface language
-                    controls: player.supported.ui ? 0 : 1, // Only show controls if not fully supported
+                    controls: 1, // Only show controls if not fully supported
                     disablekb: 1, // Disable keyboard as we handle it
                     playsinline: !player.config.fullscreen.iosNative ? 1 : 0, // Allow iOS inline playback
                     // Captions are flaky on YouTube
@@ -172,16 +192,18 @@ const youtube = {
                     if (!player.media.error) {
                         const code = event.data;
                         // Messages copied from https://developers.google.com/youtube/iframe_api_reference#onError
-                        const message =
-                            {
-                                2: 'The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.',
-                                5: 'The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.',
-                                100: 'The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.',
-                                101: 'The owner of the requested video does not allow it to be played in embedded players.',
-                                150: 'The owner of the requested video does not allow it to be played in embedded players.',
-                            }[code] || 'An unknown error occured';
+                        const message = {
+                            2: 'The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.',
+                            5: 'The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.',
+                            100: 'The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.',
+                            101: 'The owner of the requested video does not allow it to be played in embedded players.',
+                            150: 'The owner of the requested video does not allow it to be played in embedded players.',
+                        } [code] || 'An unknown error occured';
 
-                        player.media.error = { code, message };
+                        player.media.error = {
+                            code,
+                            message
+                        };
 
                         triggerEvent.call(player, player.media, 'error');
                     }
@@ -256,7 +278,9 @@ const youtube = {
                     });
 
                     // Volume
-                    let { volume } = player.config;
+                    let {
+                        volume
+                    } = player.config;
                     Object.defineProperty(player.media, 'volume', {
                         get() {
                             return volume;
@@ -269,7 +293,9 @@ const youtube = {
                     });
 
                     // Muted
-                    let { muted } = player.config;
+                    let {
+                        muted
+                    } = player.config;
                     Object.defineProperty(player.media, 'muted', {
                         get() {
                             return muted;
